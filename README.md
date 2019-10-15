@@ -1,58 +1,26 @@
-# Trumail
-
-[![CircleCI](https://circleci.com/gh/sdwolfe32/trumail.svg?style=svg)](https://circleci.com/gh/sdwolfe32/trumail)
-[![GoDoc](https://godoc.org/github.com/sdwolfe32/trumail/verifier?status.svg)](https://godoc.org/github.com/sdwolfe32/trumail/verifier)
-
-Trumail is a free and open source email validation/verification system. It is available in three forms, the Golang client library `verifier` for use in your own Go projects, a public API endpoint (more info: https://trumail.io).
-
-NOTE: While we do offer a managed, enterprise level service to paying customers, it is highly recommended that you host the service yourself either using a Docker image or by forking and serving this project on your own instance. Please keep in mind, self-hosting Trumail requires bidirectional communication on port 25 which most residential ISPs restrict - AWS and Digitalocean both permit this sort of communication.
-
-## Using the API (public or self-hosted)
-
-Using the API is very simple. All that's needed to validate an address is to send a `GET` request using the below URL with one of our three supported formats (json/jsonp(with "callback" (all lowercase) queryparam)/xml).
-```
-https://api.YOURDOMAIN/v2/lookups/{format}?email={email}&token={token}
-```
-
-## Using the library
-
-```go
-package main
-
-import (
-	"log"
-
-	trumail "github.com/oddgames/trumail/verifier"
-)
-
-func main() {
-  v := trumail.NewVerifier("YOUR_HOSTNAME.COM", "YOUR_EMAIL@DOMAIN.COM")
-  
-  // Validate a single address
-  log.Println(v.Verify("test@gmail.com"))
-}
-```
-
 ## Running with Go
 
 ```
-go get -d github.com/oddgames/trumail/...
-go install github.com/oddgames/trumail
+sudo go get -d github.com/oddgames/trumail/...
+sudo go install github.com/oddgames/trumail
 trumail
 ```
 
-## How it Works
+## Using the API (public or self-hosted)
 
-Verifying the deliverability of an email address isn't a very complicated process. In fact, the process Trumail takes to verify an address is really only half that of sending a standard email transmission and is outlined below...
 ```
-First a TCP connection is formed with the MX server on port 25.
+http://localhost:8080/v1/json/me@domain.com
+```
 
-HELO my-domain.com              // We identify ourselves as my-domain.com (set via environment variable)
-MAIL FROM: me@my-domain.com     // Set the FROM address being our own
-RCPT TO: test-email@example.com // Set the recipient and receive a (200, 500, etc..) from the server
-QUIT                            // Cancel the transaction, we have all the info we need
+## Example systemd file /etc/systemd/system/trumail.service
+
 ```
-As you can see we first form a tcp connection with the mail server on port 25. We then identify ourselves as example.com and set a reply-to email of admin@example.com (both these are configured via the SOURCE_ADDR environment variable). The last, and obviously most important step in this process is the RCPT command. This is where, based on the response from the mail server, we are able to conclude the deliverability of a given email address. A 200 implies a valid inbox and anything else implies either an error with our connection to the mail server, or a problem with the address requested.
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+ExecStart=/home/USER/go/bin/trumail
+```
 
 The BSD 3-clause License
 ========================
