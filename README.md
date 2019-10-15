@@ -17,6 +17,8 @@ http://localhost:8080/v1/json/me@domain.com
 ```
 [Service]
 Type=simple
+Environment=SOURCE_ADDR=me@domain.com
+Environment=PORT=8051
 Restart=always
 RestartSec=3
 ExecStart=/home/USER/go/bin/trumail
