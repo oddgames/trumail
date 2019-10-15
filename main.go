@@ -5,7 +5,6 @@ import (
 	"net"
 	"os"
 	"strings"
-	"http"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/oddgames/trumail/api"
