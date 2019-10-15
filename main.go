@@ -5,8 +5,7 @@ import (
 	"net"
 	"os"
 	"strings"
-
-	"github.com/oddgames/httpclient"
+	"http"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/oddgames/trumail/api"
@@ -14,10 +13,14 @@ import (
 )
 
 var (
+	
+	ip = "vpn.oddgames.com.au"
 	// port defines the port used by the api server
 	port = getEnv("PORT", "8080")
 	// sourceAddr defines the address used on verifier
 	sourceAddr = getEnv("SOURCE_ADDR", "enquiries@oddgames.com.au")
+	
+	
 )
 
 func main() {
@@ -27,7 +30,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Define the API Services
-	v := verifier.NewVerifier(retrievePTR(), sourceAddr)
+	v := verifier.NewVerifier(ip, sourceAddr)
 
 	// Bind the API endpoints to router
 	e.GET("/v1/:format/:email", api.LookupHandler(v), authMiddleware)
@@ -35,23 +38,6 @@ func main() {
 
 	// Listen and Serve
 	e.Logger.Fatal(e.Start(":" + port))
-}
-
-// RetrievePTR attempts to retrieve the PTR record for the IP
-// address retrieved via an API call on api.ipify.org
-func retrievePTR() string {
-	// Request the IP from ipify
-	ip, err := httpclient.GetString("https://api.ipify.org/")
-	if err != nil {
-		log.Fatal("Failed to retrieve public IP")
-	}
-
-	// Retrieve the PTR record for our IP and return without a trailing dot
-	names, err := net.LookupAddr(ip)
-	if err != nil {
-		return ip
-	}
-	return strings.TrimSuffix(names[0], ".")
 }
 
 // authMiddleware verifies the auth token on the request matches the
