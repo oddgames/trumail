@@ -6,18 +6,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/entrik/httpclient"
+	"github.com/oddgames/httpclient"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/sdwolfe32/trumail/api"
-	"github.com/sdwolfe32/trumail/verifier"
+	"github.com/oddgames/trumail/api"
+	"github.com/oddgames/trumail/verifier"
 )
 
 var (
 	// port defines the port used by the api server
 	port = getEnv("PORT", "8080")
 	// sourceAddr defines the address used on verifier
-	sourceAddr = getEnv("SOURCE_ADDR", "admin@gmail.com")
+	sourceAddr = getEnv("SOURCE_ADDR", "enquiries@oddgames.com.au")
 )
 
 func main() {
