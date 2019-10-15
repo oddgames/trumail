@@ -1,10 +1,7 @@
 package main
 
 import (
-	"log"
-	"net"
 	"os"
-	"strings"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/oddgames/trumail/api"
