@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/sdwolfe32/trumail.svg?style=svg)](https://circleci.com/gh/sdwolfe32/trumail)
 [![GoDoc](https://godoc.org/github.com/sdwolfe32/trumail/verifier?status.svg)](https://godoc.org/github.com/sdwolfe32/trumail/verifier)
 
-Trumail is a free and open source email validation/verification system. It is available in three forms, the Golang client library `verifier` for use in your own Go projects, a public API endpoint (more info: https://trumail.io), and a public Docker image on DockerHub (see: https://hub.docker.com/r/sdwolfe32/trumail/). 
+Trumail is a free and open source email validation/verification system. It is available in three forms, the Golang client library `verifier` for use in your own Go projects, a public API endpoint (more info: https://trumail.io).
 
 NOTE: While we do offer a managed, enterprise level service to paying customers, it is highly recommended that you host the service yourself either using a Docker image or by forking and serving this project on your own instance. Please keep in mind, self-hosting Trumail requires bidirectional communication on port 25 which most residential ISPs restrict - AWS and Digitalocean both permit this sort of communication.
 
@@ -11,7 +11,7 @@ NOTE: While we do offer a managed, enterprise level service to paying customers,
 
 Using the API is very simple. All that's needed to validate an address is to send a `GET` request using the below URL with one of our three supported formats (json/jsonp(with "callback" (all lowercase) queryparam)/xml).
 ```
-https://api.trumail.io/v2/lookups/{format}?email={email}&token={token}
+https://api.YOURDOMAIN/v2/lookups/{format}?email={email}&token={token}
 ```
 
 ## Using the library
@@ -22,7 +22,7 @@ package main
 import (
 	"log"
 
-	trumail "github.com/sdwolfe32/trumail/verifier"
+	trumail "github.com/oddgames/trumail/verifier"
 )
 
 func main() {
@@ -36,15 +36,9 @@ func main() {
 ## Running with Go
 
 ```
-go get -d github.com/sdwolfe32/trumail/...
-go install github.com/sdwolfe32/trumail
+go get -d github.com/oddgames/trumail/...
+go install github.com/oddgames/trumail
 trumail
-```
-
-## Running with Docker
-
-```
-docker run -p 8080:8080 -e SOURCE_ADDR=my.email@gmail.com sdwolfe32/trumail
 ```
 
 ## How it Works
