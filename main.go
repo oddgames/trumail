@@ -14,7 +14,7 @@ var (
 	// port defines the port used by the api server
 	port = getEnv("PORT", "8080")
 	// sourceAddr defines the address used on verifier
-	sourceAddr = getEnv("SOURCE_ADDR", "enquiries@oddgames.com.au")
+	sourceAddr = getEnv("SOURCE_ADDR", "admin@gmail.com")
 	
 	
 )
